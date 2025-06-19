@@ -8,12 +8,6 @@ set NINJA_VERSION=1.13.0
 set CMAKE_VERSION=4.0.3
 set ZIG_CMAKE_FLAGS=-DCMAKE_BUILD_TYPE=Release -DZIG_NO_LIB=ON
 
-@REM set ZIG_COMMIT=master
-:: this one was last good build at home and work
-@REM set ZIG_COMMIT=ef35c3d5fefb8c14e17f3c7036bb21e808ee59be
-:: current state of master as of writing so as not to be as dynamic as just plain "master"
-set ZIG_COMMIT=36499c251c592d10a8258b1562bee22e5fb7899a
-
 :: precompute paths and file names
 set DEVKIT_LONGNAME=zig+llvm+lld+clang-x86_64-windows-gnu-%DEVKIT_VERSION%
 set DEVKIT_NAME=devkit-%DEVKIT_VERSION%
@@ -75,6 +69,12 @@ mkdir %ZIGROOTBIN_WIN%
 :: probably zlib since that has caused problems for me in the past on this PC
 set WINSYS32=%SystemRoot%\System32
 set PATH=%ZIGROOTBIN_WIN%;%ZIGROOTBIN_WIN%\%CMAKE_NAME%\bin;%WINSYS32%;%SystemRoot%;%WINSYS32%\Wbem;%WINSYS32%\WindowsPowerShell\v1.0\;%WINSYS32%\OpenSSH\;%ProgramFiles%\dotnet\;%LOCALAPPDATA%\Microsoft\WindowsApps;%LOCALAPPDATA%\Programs\Git\bin;%ProgramFiles%\Git\cmd
+
+:: Override the cache directories because they won't actually help other Zig runs outside of this repo.
+:: Runs of this script, however, will be testing alternate versions of zig, and ultimately would just
+:: fill up space on the hard drive for no reason for other unrelated jobs otherwise.
+set ZIG_GLOBAL_CACHE_DIR=%ZIG_BUILD_WIN%\zig-global-cache
+set ZIG_LOCAL_CACHE_DIR=%ZIG_BUILD_WIN%\zig-local-cache
 
 set DEVKIT_VER_TMP=
 if exist %ZIG_EXE_WIN% (for /F "tokens=*" %%g in ('%ZIG_EXE_WIN% version') do (set DEVKIT_VER_TMP=%%g))

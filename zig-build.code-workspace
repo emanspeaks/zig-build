@@ -8,9 +8,19 @@
     "zig.path": "${workspaceFolder}\\zig-src\\build\\stage3\\bin\\zig.exe",
     "zig.zls.enabled": "on",
     "cmake.ignoreCMakeListsMissing": true,
+    "files.exclude": {
+      "**/.git": true,
+      "**/.zig-cache/**": true,
+      "build/zig-global-cache/**": true,
+      "build/zig-local-cache/**": true,
+    },
     "files.watcherExclude": {
-      "**/zig+llvm+lld+clang-x86_64-windows-gnu-*/**": true,
-      "**/bin/cmake-*-windows-x86_64/**": true,
+      "zig+llvm+lld+clang-x86_64-windows-gnu-*/**": true,
+      "bin/cmake-*-windows-x86_64/**": true,
+      "**/.zig-cache/**": true,
+      "build/zig-global-cache/**": true,
+      "build/zig-local-cache/**": true,
+      "build/CMakeFiles/**": true,
     }
   }
 }

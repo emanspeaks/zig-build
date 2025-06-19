@@ -31,6 +31,12 @@ set "ZIG_STAGE4_EXE_WIN=%ZIG_STAGE4_EXE:/=\%"
 set WINSYS32=%SystemRoot%\System32
 set PATH=%ZIG_STAGE3_BIN%;%ZIGROOTBIN_WIN%;%ZIGROOTBIN_WIN%\%CMAKE_NAME%\bin;%WINSYS32%;%SystemRoot%;%WINSYS32%\Wbem;%WINSYS32%\WindowsPowerShell\v1.0\;%WINSYS32%\OpenSSH\;%ProgramFiles%\dotnet\;%LOCALAPPDATA%\Microsoft\WindowsApps;%LOCALAPPDATA%\Programs\Git\bin;%ProgramFiles%\Git\cmd
 
+:: Override the cache directories because they won't actually help other Zig runs outside of this repo.
+:: Runs of this script, however, will be testing alternate versions of zig, and ultimately would just
+:: fill up space on the hard drive for no reason for other unrelated jobs otherwise.
+set ZIG_GLOBAL_CACHE_DIR=%ZIG_BUILD_WIN%\zig-global-cache
+set ZIG_LOCAL_CACHE_DIR=%ZIG_BUILD_WIN%\zig-local-cache
+
 cd %ZIG_BUILD_WIN%
 ninja install || goto :ninjafail
 %ZIG_STAGE3_EXE_WIN% build -p stage4 -Denable-llvm -Dno-lib || goto :zigbuildfail
