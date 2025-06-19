@@ -1,7 +1,11 @@
 {
     "version": "0.2",
+    "import": [
+        ".cspell/zig/cspell-ext.json"
+    ],
     "ignorePaths": [
-        "cspell.json"
+        ".cspell.json",
+        ".cspell/**/*",
     ],
     "dictionaryDefinitions": [],
     "dictionaries": [
@@ -17,10 +21,9 @@
         "WINSYS32"
     ],
     "ignoreWords": [
-        "Denable",
-        "DCMAKE",
-        "Dskip",
-        "DZIG"
+
     ],
-    "import": []
+    "ignoreRegExpList": [
+        "/-D.*/"
+    ]
 }

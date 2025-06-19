@@ -19,10 +19,13 @@ set "ZIG_BUILD_WIN=%ZIG_BUILD:/=\%"
 set ZIG_STAGE3_BIN=%ZIG_BUILD%/stage3/bin
 set "ZIG_STAGE3_BIN_WIN=%ZIG_STAGE3_BIN:/=\%"
 
+set ZIG_STAGE4=%ZIG_BUILD%/stage4
+set "ZIG_STAGE4_WIN=%ZIG_STAGE4:/=\%"
+
 set ZIG_STAGE3_EXE=%ZIG_STAGE3_BIN%/zig.exe
 set "ZIG_STAGE3_EXE_WIN=%ZIG_STAGE3_EXE:/=\%"
 
-set ZIG_STAGE4_EXE=%ZIG_BUILD%/stage4/bin/zig.exe
+set ZIG_STAGE4_EXE=%ZIG_STAGE4%/bin/zig.exe
 set "ZIG_STAGE4_EXE_WIN=%ZIG_STAGE4_EXE:/=\%"
 
 :: set PATH to a very minimal set of values to limit bad dependency resolution
@@ -39,7 +42,9 @@ set ZIG_LOCAL_CACHE_DIR=%ZIG_BUILD_WIN%\zig-local-cache
 
 cd %ZIG_BUILD_WIN%
 ninja install || goto :ninjafail
-%ZIG_STAGE3_EXE_WIN% build -p stage4 -Denable-llvm -Dno-lib || goto :zigbuildfail
+
+cd %ZIG_SRC_WIN%
+%ZIG_STAGE3_EXE_WIN% build -p %ZIG_STAGE4_WIN% -Denable-llvm -Dno-lib || goto :zigbuildfail
 if %FULLTESTFLAG%==1 (
   %ZIG_STAGE4_EXE_WIN% build test -Denable-llvm || goto :zigtestfail
 ) else (

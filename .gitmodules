@@ -1,3 +1,6 @@
 [submodule "zig-src"]
 	path = zig-src
 	url = https://github.com/ziglang/zig.git
+[submodule ".cspell/zig"]
+	path = .cspell/zig
+	url = https://github.com/emanspeaks/cspell-zig.git
