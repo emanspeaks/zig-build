@@ -10,6 +10,9 @@ set "ZIGROOT=%ZIGROOT:~0,-1%"
 set "ZIGROOT=%ZIGROOT:\=/%"
 set "ZIGROOT_WIN=%ZIGROOT:/=\%"
 
+set ZIGROOTBIN=%ZIGROOT%/bin
+set "ZIGROOTBIN_WIN=%ZIGROOTBIN:/=\%"
+
 set ZIG_SRC=%ZIGROOT%/zig-src
 set "ZIG_SRC_WIN=%ZIG_SRC:/=\%"
 
