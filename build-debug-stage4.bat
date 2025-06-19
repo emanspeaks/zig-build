@@ -21,6 +21,7 @@ set "ZIG_STAGE3_EXE_WIN=%ZIG_STAGE3_EXE:/=\%"
 set ZIG_STAGE4_EXE=%ZIG_BUILD%/stage4/bin/zig.exe
 set "ZIG_STAGE4_EXE_WIN=%ZIG_STAGE4_EXE:/=\%"
 
+cd %ZIG_BUILD_WIN%
 ninja install || goto :ninjafail
 %ZIG_STAGE3_EXE_WIN% build -p stage4 -Denable-llvm -Dno-lib || goto :zigbuildfail
 if %FULLTESTFLAG%==1 (
@@ -29,8 +30,14 @@ if %FULLTESTFLAG%==1 (
   %ZIG_STAGE4_EXE_WIN% build test-std -Dskip-release -Dskip-non-native || goto :zigtestfail
 )
 
+echo Zig debug successfully built!
+goto :success
+
 :ninjafail
 :zigbuildfail
 :zigtestfail
+exit /b 1
+
+:success
 cd %ZIGROOT_WIN%
 endlocal

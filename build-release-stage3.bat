@@ -108,10 +108,19 @@ if %FULLTESTFLAG%==1 (
   %ZIG_STAGE3_EXE_WIN% build test-std -Dskip-release -Dskip-non-native || goto :zigtestfail
 )
 
+cd %ZIGROOT_WIN%
+call build-debug-stage4 || goto :stage4fail
+echo Zig successfully built!
+goto :success
+
 :curlfail
 :tarfail
 :cmakefail
 :ninjafail
 :zigtestfail
+:stage4fail
+exit /b 1
+
+:success
 cd %ZIGROOT_WIN%
 endlocal
