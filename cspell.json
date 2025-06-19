@@ -7,13 +7,14 @@
     "dictionaries": [
         "bash",
         "win32",
-        "scientific-terms-us",
+        "scientific-terms-us"
     ],
     "words": [
-        "CMake",
         "checkcmake",
+        "CMake",
         "cmakefail",
-        "WINSYS32",
+        "mklink",
+        "WINSYS32"
     ],
     "ignoreWords": [
         "Denable",

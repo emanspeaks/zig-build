@@ -63,6 +63,8 @@ set "NINJA_ZIP_WIN=%NINJA_ZIP:/=\%"
 
 mkdir %DOWNLOADS_WIN%
 mkdir %ZIGROOTBIN_WIN%
+mkdir %ZIG_BUILD_WIN%
+mklink /d %ZIG_BUILD_WIN%\lib %ZIG_SRC_WIN%\lib
 
 :: set PATH to a very minimal set of values to limit bad dependency resolution
 :: I think something in my path on work laptop is polluting dependencies,
@@ -108,10 +110,11 @@ if not "%NINJA_VER_TMP%" == "%NINJA_VERSION%" (
   cd %ZIGROOT_WIN%
 )
 
-mkdir %ZIG_BUILD_WIN%
 cd %ZIG_BUILD_WIN%
 cmake %ZIG_SRC% -GNinja -DCMAKE_PREFIX_PATH="%DEVKIT%" -DCMAKE_C_COMPILER="%ZIG_EXE%;cc" -DCMAKE_CXX_COMPILER="%ZIG_EXE%;c++" -DCMAKE_AR="%ZIG_EXE%" -DZIG_AR_WORKAROUND=ON -DZIG_STATIC=ON -DZIG_USE_LLVM_CONFIG=OFF %ZIG_CMAKE_FLAGS% || goto :cmakefail
 ninja install || goto :ninjafail
+
+cd %ZIG_SRC_WIN%
 if %FULLTESTFLAG%==1 (
   %ZIG_STAGE3_EXE_WIN% build test || goto :zigtestfail
 ) else (
