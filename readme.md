@@ -4,7 +4,7 @@ A collection of scripts to automate building the [Zig](https://ziglang.org) comp
 
 Currently, this is only written for Windows, but eventually it will also support other platforms.
 
-This addresses cloning the [Zig source repo](https://github.com/ziglang/zig.git), downloading portable versions of Cmake, Ninja, and the Zig LLVM devkit as necessary, and then checks out a known good commit of Zig to do the build.  It also locally sets `$PATH` to a minimal set of values due to issues with other libraries installed on the machine polluting the build.
+The scripts in this repo address cloning the [Zig source repo](https://github.com/ziglang/zig.git) (as a submodule), downloading portable versions of CMake, Ninja, and the Zig LLVM devkit as necessary, and then checks out a known good commit of Zig to do the build.  It also locally sets `$PATH` to a minimal set of values due to issues with other libraries installed on the machine polluting the build.
 
 ## Usage
 

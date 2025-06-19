@@ -1,3 +1,4 @@
+:: cSpell:enableCompoundWords
 setlocal
 set FULLTESTFLAG=0
 

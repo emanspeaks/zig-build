@@ -2,13 +2,26 @@
     "version": "0.2",
     "ignorePaths": [
         // "**/*.bat"
-        "build-*.bat"
+        // "build-*.bat"
+        "cspell.json"
     ],
     "dictionaryDefinitions": [],
-    "dictionaries": [],
-    "words": [
-        "devkit"
+    "dictionaries": [
+        "bash",
+        "win32",
+        "scientific-terms-us",
     ],
-    "ignoreWords": [],
+    "words": [
+        "CMake",
+        "checkcmake",
+        "cmakefail",
+        "WINSYS32",
+    ],
+    "ignoreWords": [
+        "Denable",
+        "DCMAKE",
+        "Dskip",
+        "DZIG"
+    ],
     "import": []
 }
