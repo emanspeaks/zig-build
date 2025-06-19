@@ -1,0 +1,3 @@
+[submodule "zig-src"]
+	path = zig-src
+	url = https://github.com/ziglang/zig.git

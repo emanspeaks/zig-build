@@ -7,5 +7,10 @@
   "settings": {
     "zig.path": "${workspaceFolder}\\zig-src\\build\\stage3\\bin\\zig.exe",
     "zig.zls.enabled": "on",
+    "cmake.ignoreCMakeListsMissing": true,
+    "files.watcherExclude": {
+      "**/zig+llvm+lld+clang-x86_64-windows-gnu-*/**": true,
+      "**/bin/cmake-*-windows-x86_64/**": true,
+    }
   }
 }

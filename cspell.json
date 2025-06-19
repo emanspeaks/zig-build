@@ -1,0 +1,14 @@
+{
+    "version": "0.2",
+    "ignorePaths": [
+        // "**/*.bat"
+        "build-*.bat"
+    ],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "devkit"
+    ],
+    "ignoreWords": [],
+    "import": []
+}

@@ -39,8 +39,11 @@ set "DEVKIT_WIN=%DEVKIT:/=\%"
 set ZIG_SRC=%ZIGROOT%/zig-src
 set "ZIG_SRC_WIN=%ZIG_SRC:/=\%"
 
-set ZIG_BUILD=%ZIG_SRC%/build
+set ZIG_BUILD=%ZIGROOT%/build
 set "ZIG_BUILD_WIN=%ZIG_BUILD:/=\%"
+
+set CMAKE_DIR=%ZIGROOTBIN%/%CMAKE_NAME%
+set "CMAKE_DIR_WIN=%CMAKE_DIR:/=\%"
 
 set ZIG_EXE=%DEVKIT%/bin/zig.exe
 set "ZIG_EXE_WIN=%ZIG_EXE:/=\%"
@@ -51,8 +54,17 @@ set "ZIG_STAGE3_EXE_WIN=%ZIG_STAGE3_EXE:/=\%"
 set NINJA_EXE=%ZIGROOTBIN%/ninja.exe
 set "NINJA_EXE_WIN=%NINJA_EXE:/=\%"
 
-set CMAKE_EXE=%ZIGROOTBIN%/%CMAKE_NAME%/bin/cmake.exe
+set CMAKE_EXE=%CMAKE_DIR%/bin/cmake.exe
 set "CMAKE_EXE_WIN=%CMAKE_EXE:/=\%"
+
+set DEVKIT_ZIP=%DOWNLOADS_WIN%\%DEVKIT_NAME%.zip
+set "DEVKIT_ZIP_WIN=%DEVKIT_ZIP:/=\%"
+
+set CMAKE_ZIP=%DOWNLOADS_WIN%\%CMAKE_NAME%.zip
+set "CMAKE_ZIP_WIN=%CMAKE_ZIP:/=\%"
+
+set NINJA_ZIP=%DOWNLOADS_WIN%\ninja-%NINJA_VERSION%-win.zip
+set "NINJA_ZIP_WIN=%NINJA_ZIP:/=\%"
 
 mkdir %DOWNLOADS_WIN%
 mkdir %ZIGROOTBIN_WIN%
@@ -61,13 +73,14 @@ mkdir %ZIGROOTBIN_WIN%
 :: I think something in my path on work laptop is polluting dependencies,
 :: probably zlib since that has caused problems for me in the past on this PC
 set WINSYS32=%SystemRoot%\System32
-set PATH=%ZIGROOTBIN_WIN%;%ZIGROOTBIN_WIN%\%CMAKE_NAME%\bin;%WINSYS32%;%SystemRoot%;%WINSYS32%\Wbem;%WINSYS32%\WindowsPowerShell\v1.0\;%WINSYS32%\OpenSSH\;%ProgramFiles%\dotnet\;%LOCALAPPDATA%\Microsoft\WindowsApps;%LOCALAPPDATA%\Programs\Git\bin
+set PATH=%ZIGROOTBIN_WIN%;%ZIGROOTBIN_WIN%\%CMAKE_NAME%\bin;%WINSYS32%;%SystemRoot%;%WINSYS32%\Wbem;%WINSYS32%\WindowsPowerShell\v1.0\;%WINSYS32%\OpenSSH\;%ProgramFiles%\dotnet\;%LOCALAPPDATA%\Microsoft\WindowsApps;%LOCALAPPDATA%\Programs\Git\bin;%ProgramFiles%\Git\cmd
 
 set DEVKIT_VER_TMP=
 if exist %ZIG_EXE_WIN% (for /F "tokens=*" %%g in ('%ZIG_EXE_WIN% version') do (set DEVKIT_VER_TMP=%%g))
 if not "%DEVKIT_VER_TMP%" == "%DEVKIT_VERSION%" (
-  curl -o %DOWNLOADS_WIN%\%DEVKIT_NAME%.zip -L https://ziglang.org/deps/%DEVKIT_LONGNAME%.zip || goto :curlfail
-  tar -xf %DOWNLOADS_WIN%\%DEVKIT_NAME%.zip || goto :tarfail
+  if not exist %DEVKIT_ZIP_WIN% (curl -o %DEVKIT_ZIP_WIN% -L https://ziglang.org/deps/%DEVKIT_LONGNAME%.zip || goto :curlfail)
+  if exist %DEVKIT_WIN% (rmdir /S /Q %DEVKIT_WIN%)
+  tar -xmSf %DEVKIT_ZIP_WIN% || goto :tarfail
   move %DEVKIT_LONGNAME% %DEVKIT_NAME%
 )
 
@@ -78,33 +91,25 @@ if exist %CMAKE_EXE_WIN% (for /F "tokens=3" %%g in ('%CMAKE_EXE_WIN% --version')
 ))
 :checkcmake
 if not "%CMAKE_VER_TMP%" == "%CMAKE_VERSION%" (
-  curl -o %DOWNLOADS_WIN%\%CMAKE_NAME%.zip -L https://github.com/Kitware/CMake/releases/download/v%CMAKE_VERSION%/cmake-%CMAKE_VERSION%-windows-x86_64.zip || goto :curlfail
+  if not exist %CMAKE_ZIP_WIN% (curl -o %CMAKE_ZIP_WIN% -L https://github.com/Kitware/CMake/releases/download/v%CMAKE_VERSION%/cmake-%CMAKE_VERSION%-windows-x86_64.zip || goto :curlfail)
   cd %ZIGROOTBIN_WIN%
-  tar -xf %DOWNLOADS_WIN%\%CMAKE_NAME%.zip || goto :tarfail
+  if exist %CMAKE_DIR_WIN% (rmdir /S /Q %CMAKE_DIR_WIN%)
+  tar -xmSf %CMAKE_ZIP_WIN% || goto :tarfail
   move %CMAKE_LONGNAME% %CMAKE_NAME%
 )
 
 set NINJA_VER_TMP=
 if exist %NINJA_EXE_WIN% (for /F "tokens=*" %%g in ('%NINJA_EXE_WIN% --version') do (set NINJA_VER_TMP=%%g))
 if not "%NINJA_VER_TMP%" == "%NINJA_VERSION%" (
-  curl -o %DOWNLOADS_WIN%\ninja-%NINJA_VERSION%-win.zip -L https://github.com/ninja-build/ninja/releases/download/v%NINJA_VERSION%/ninja-win.zip || goto :curlfail
+  if not exist %NINJA_ZIP_WIN% (curl -o %NINJA_ZIP_WIN% -L https://github.com/ninja-build/ninja/releases/download/v%NINJA_VERSION%/ninja-win.zip || goto :curlfail)
   cd %ZIGROOTBIN_WIN%
-  tar -xf %DOWNLOADS_WIN%\ninja-%NINJA_VERSION%-win.zip || goto :tarfail
+  tar -xmSf %NINJA_ZIP_WIN% || goto :tarfail
   cd %ZIGROOT_WIN%
 )
 
-if not exist %ZIG_SRC_WIN%/ (
-  git clone https://github.com/ziglang/zig.git zig-src
-)
-
-cd %ZIG_SRC_WIN%
-git fetch
-git checkout %ZIG_COMMIT%
-git pull
-
 mkdir %ZIG_BUILD_WIN%
 cd %ZIG_BUILD_WIN%
-cmake .. -GNinja -DCMAKE_PREFIX_PATH="%DEVKIT%" -DCMAKE_C_COMPILER="%ZIG_EXE%;cc" -DCMAKE_CXX_COMPILER="%ZIG_EXE%;c++" -DCMAKE_AR="%ZIG_EXE%" -DZIG_AR_WORKAROUND=ON -DZIG_STATIC=ON -DZIG_USE_LLVM_CONFIG=OFF %ZIG_CMAKE_FLAGS% || goto :cmakefail
+cmake %ZIG_SRC% -GNinja -DCMAKE_PREFIX_PATH="%DEVKIT%" -DCMAKE_C_COMPILER="%ZIG_EXE%;cc" -DCMAKE_CXX_COMPILER="%ZIG_EXE%;c++" -DCMAKE_AR="%ZIG_EXE%" -DZIG_AR_WORKAROUND=ON -DZIG_STATIC=ON -DZIG_USE_LLVM_CONFIG=OFF %ZIG_CMAKE_FLAGS% || goto :cmakefail
 ninja install || goto :ninjafail
 if %FULLTESTFLAG%==1 (
   %ZIG_STAGE3_EXE_WIN% build test || goto :zigtestfail

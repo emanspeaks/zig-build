@@ -1,4 +1,6 @@
 /bin/
 /downloads/
-/zig-src/
 /devkit-*/
+/zig+llvm+lld+clang-x86_64-windows-gnu-*/
+/build/
+.zig-cache/
