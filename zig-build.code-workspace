@@ -1,11 +1,11 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"zig.path": "${workspaceFolder}\\zig-src\\build\\stage3\\bin\\zig.exe",
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "zig.path": "${workspaceFolder}\\zig-src\\build\\stage3\\bin\\zig.exe",
     "zig.zls.enabled": "on",
-	}
+  }
 }

@@ -5,9 +5,13 @@ set FULLTESTFLAG=0
 set DEVKIT_VERSION=0.15.0-dev.233+7c85dc460
 set NINJA_VERSION=1.13.0
 set CMAKE_VERSION=4.0.3
-rem set ZIG_COMMIT=master
-set ZIG_COMMIT=ef35c3d5fefb8c14e17f3c7036bb21e808ee59be
 set ZIG_CMAKE_FLAGS=-DCMAKE_BUILD_TYPE=Release -DZIG_NO_LIB=ON
+
+@REM set ZIG_COMMIT=master
+:: this one was last good build at home and work
+@REM set ZIG_COMMIT=ef35c3d5fefb8c14e17f3c7036bb21e808ee59be
+:: current state of master as of writing so as not to be as dynamic as just plain "master"
+set ZIG_COMMIT=36499c251c592d10a8258b1562bee22e5fb7899a
 
 :: precompute paths and file names
 set DEVKIT_LONGNAME=zig+llvm+lld+clang-x86_64-windows-gnu-%DEVKIT_VERSION%
