@@ -1,4 +1,6 @@
 setlocal
+set FULLTESTFLAG=0
+
 :: check these versions before running!
 set DEVKIT_VERSION=0.15.0-dev.233+7c85dc460
 set NINJA_VERSION=1.13.0
@@ -6,7 +8,6 @@ set CMAKE_VERSION=4.0.3
 rem set ZIG_COMMIT=master
 set ZIG_COMMIT=ef35c3d5fefb8c14e17f3c7036bb21e808ee59be
 set ZIG_CMAKE_FLAGS=-DCMAKE_BUILD_TYPE=Release -DZIG_NO_LIB=ON
-set ZIGROOT=C:/zig
 
 :: precompute paths and file names
 set DEVKIT_LONGNAME=zig+llvm+lld+clang-x86_64-windows-gnu-%DEVKIT_VERSION%
@@ -17,6 +18,8 @@ set CMAKE_NAME=cmake-%CMAKE_VERSION%
 :: Make sure to use forward slashes (/) for all path separators
 :: (otherwise CMake will try to interpret backslashes as escapes and fail).
 :: We will assume all paths are POSIX except those ending in `_WIN`.
+set ZIGROOT=%~dp0
+set "ZIGROOT=%ZIGROOT:~0,-1%"
 set "ZIGROOT=%ZIGROOT:\=/%"
 set "ZIGROOT_WIN=%ZIGROOT:/=\%"
 
@@ -37,6 +40,9 @@ set "ZIG_BUILD_WIN=%ZIG_BUILD:/=\%"
 
 set ZIG_EXE=%DEVKIT%/bin/zig.exe
 set "ZIG_EXE_WIN=%ZIG_EXE:/=\%"
+
+set ZIG_STAGE3_EXE=%ZIG_BUILD%/stage3/bin/zig.exe
+set "ZIG_STAGE3_EXE_WIN=%ZIG_STAGE3_EXE:/=\%"
 
 set NINJA_EXE=%ZIGROOTBIN%/ninja.exe
 set "NINJA_EXE_WIN=%NINJA_EXE:/=\%"
@@ -96,9 +102,16 @@ mkdir %ZIG_BUILD_WIN%
 cd %ZIG_BUILD_WIN%
 cmake .. -GNinja -DCMAKE_PREFIX_PATH="%DEVKIT%" -DCMAKE_C_COMPILER="%ZIG_EXE%;cc" -DCMAKE_CXX_COMPILER="%ZIG_EXE%;c++" -DCMAKE_AR="%ZIG_EXE%" -DZIG_AR_WORKAROUND=ON -DZIG_STATIC=ON -DZIG_USE_LLVM_CONFIG=OFF %ZIG_CMAKE_FLAGS% || goto :cmakefail
 ninja install || goto :ninjafail
+if %FULLTESTFLAG%==1 (
+  %ZIG_STAGE3_EXE_WIN% build test || goto :zigtestfail
+) else (
+  %ZIG_STAGE3_EXE_WIN% build test-std -Dskip-release -Dskip-non-native || goto :zigtestfail
+)
 
 :curlfail
 :tarfail
 :cmakefail
 :ninjafail
+:zigtestfail
 cd %ZIGROOT_WIN%
+endlocal

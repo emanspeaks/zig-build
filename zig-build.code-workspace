@@ -4,5 +4,8 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"zig.path": "${workspaceFolder}\\zig-src\\build\\stage3\\bin\\zig.exe",
+    "zig.zls.enabled": "on",
+	}
 }
