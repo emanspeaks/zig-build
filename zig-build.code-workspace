@@ -5,14 +5,14 @@
     }
   ],
   "settings": {
-    "zig.path": "${workspaceFolder}\\zig-src\\build\\stage3\\bin\\zig.exe",
+    // "zig.path": "${workspaceFolder}\\zig-src\\build\\stage3\\bin\\zig.exe",
     "zig.zls.enabled": "on",
     "cmake.ignoreCMakeListsMissing": true,
     "files.exclude": {
       "**/.git": true,
       "**/.zig-cache/**": true,
-      "build/zig-global-cache/**": true,
-      "build/zig-local-cache/**": true,
+      // "build/zig-global-cache/**": true,
+      // "build/zig-local-cache/**": true,
     },
     "files.watcherExclude": {
       "zig+llvm+lld+clang-x86_64-windows-gnu-*/**": true,
@@ -21,6 +21,159 @@
       "build/zig-global-cache/**": true,
       "build/zig-local-cache/**": true,
       "build/CMakeFiles/**": true,
-    }
+    },
+    "lldb.launch.initCommands": [
+      "command script import ${workspaceFolder}/zig-src/tools/lldb_pretty_printers.py",
+      "type category enable zig",
+      "type category enable zig.lang",
+      "type category enable zig.std",
+      "type category enable zig.stage2"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build (Debug)",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "clear": true,
+          "reveal": "always",
+          "panel": "shared"
+        },
+        "type": "shell",
+        "command": "zig build",
+      },
+      {
+        // using "args" quotes 'zig build' and breaks the command
+        "label": "Build (Fast)",
+        "group": {
+          "kind": "build",
+          "isDefault": false
+        },
+        "presentation": {
+          "clear": true,
+          "reveal": "always",
+          "panel": "shared"
+        },
+        "type": "shell",
+        "command": "zig build --release=fast",
+      },
+      {
+        // using "args" quotes 'zig build' and breaks the command
+        "label": "Build (Safe)",
+        "group": {
+          "kind": "build",
+          "isDefault": false
+        },
+        "presentation": {
+          "clear": true,
+          "reveal": "always",
+          "panel": "shared"
+        },
+        "type": "shell",
+        "command": "zig build --release=safe",
+      },
+      {
+        // using "args" quotes 'zig build' and breaks the command
+        "label": "Build (Small)",
+        "group": {
+          "kind": "build",
+          "isDefault": false
+        },
+        "presentation": {
+          "clear": true,
+          "reveal": "always",
+          "panel": "shared"
+        },
+        "type": "shell",
+        "command": "zig build --release=small",
+      },
+      {
+        "label": "Run File",
+        "group": {
+          "kind": "build",
+          "isDefault": false
+        },
+        "presentation": {
+          "clear": true,
+          "reveal": "always",
+          "panel": "shared"
+        },
+        "type": "shell",
+        "command": "zig run ${file} -lc",
+      },
+      {
+        "label": "Test All",
+        "group": "test",
+        "presentation": {
+          "clear": true,
+          "reveal": "always",
+          "panel": "shared"
+        },
+        "type": "shell",
+        "command": "zig build test",
+      },
+      {
+        "label": "Test File",
+        "group": "test",
+        "presentation": {
+          "clear": true,
+          "reveal": "always",
+          "panel": "shared"
+        },
+        "type": "shell",
+        "command": "zig test ${file} -lc",
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Windows Debug Launch",
+        "type": "cppvsdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/zig-out/bin/lua_exe",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        // "envFile": "",
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "preLaunchTask": "Build (Debug)",
+      },
+      {
+        "name": "POSIX Debug Launch",
+        "type": "lldb",
+        "request": "launch",
+        "program": "${workspaceFolder}/zig-out/bin/lua_exe",
+        "args": [],
+        "stopOnEntry": false,
+        "cwd": "${workspaceFolder}",
+        "env": {},
+        // "envFile": "",
+        "terminal": "integrated",
+        "internalConsoleOptions": "neverOpen",
+        "preLaunchTask": "Build (Debug)",
+      }
+    ],
+    "compounds": []
+  },
+  "extensions": {
+    "recommendations": [
+      "ziglang.vscode-zig",
+      "ms-vscode.cpptools",  // windows debug
+      "vadimcn.vscode-lldb",  // posix debug
+      "streetsidesoftware.code-spell-checker",
+      "streetsidesoftware.code-spell-checker-scientific-terms",
+      "streetsidesoftware.code-spell-checker-win32",
+      "manateeengine.code-spell-checker-zig",
+      // "ltex-plus.vscode-ltex-plus",
+    ]
   }
 }

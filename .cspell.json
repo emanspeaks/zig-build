@@ -5,7 +5,9 @@
     ],
     "ignorePaths": [
         ".cspell.json",
-        ".cspell/**/*",
+        ".cspell/**",
+        ".git/**",
+        "*.code-workspace"
     ],
     "dictionaryDefinitions": [],
     "dictionaries": [
