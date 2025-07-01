@@ -7,7 +7,9 @@
         ".cspell.json",
         ".cspell/**",
         ".git/**",
-        "*.code-workspace"
+        "*.code-workspace",
+        "zig-src/**",
+        ".local-gitignore"
     ],
     "dictionaryDefinitions": [],
     "dictionaries": [
