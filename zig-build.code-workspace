@@ -13,8 +13,10 @@
       "**/.zig-cache/**": true,
       // "build/zig-global-cache/**": true,
       // "build/zig-local-cache/**": true,
+      "randytmp/zig-build/**": true,
     },
     "files.watcherExclude": {
+      "**/build/**": true,
       "zig+llvm+lld+clang-x86_64-windows-gnu-*/**": true,
       "bin/cmake-*-windows-x86_64/**": true,
       "**/.zig-cache/**": true,
