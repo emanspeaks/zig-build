@@ -6,11 +6,21 @@ export FULLTESTFLAG=0
 # check these versions before running!
 # export DEVKIT_VERSION=0.16.0-dev.104+689461e31
 export DEVKIT_VERSION=0.17.0-dev.203+073889523
+
 export NINJA_VERSION=1.13.2
 export CMAKE_VERSION=4.3.3
 # export ZIG_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Release -DZIG_NO_LIB=ON"
-# export ZIG_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DZIG_NO_LIB=ON"
-export ZIG_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DZIG_NO_LIB=ON -DZIG_EXTRA_BUILD_ARGS=-j1"
+# export ZIG_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DZIG_NO_LIB=ON -DCMAKE_VERBOSE_MAKEFILE=ON"
+# export ZIG_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DZIG_NO_LIB=ON -DZIG_EXTRA_BUILD_ARGS=-j1"
+export ZIG_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DZIG_NO_LIB=ON -DCMAKE_VERBOSE_MAKEFILE=ON -DZIG_EXTRA_BUILD_ARGS=--verbose-cc\;--verbose-link"
+# export NINJA_ARGS="-v -d explain"
+export NINJA_ARGS="-v"
+
+export ZIG_BUILD_TYPE_DEBUG=
+export ZIG_BUILD_TYPE_RELWITHDEBINFO="-Doptimize=ReleaseFast"
+export ZIG_BUILD_TYPE_RELEASE="-Doptimize=ReleaseFast -Dstrip"export ZIG_BUILD_TYPE_MINSIZEREL="-Doptimize=ReleaseSmall"
+
+export ZIG_BUILD_TYPE="$ZIG_BUILD_TYPE_RELWITHDEBINFO"
 
 # precompute paths and file names
 export DEVKIT_NAME=devkit-$DEVKIT_VERSION
@@ -70,4 +80,15 @@ pause () {
   # cmd //c pause
   read -n 1 -s -r -p "Press any key to continue..."
   echo
+}
+
+safe-unzip () {
+  local zip_file=$1
+  local dest_dir=$2
+  unzip "$zip_file" -d "$dest_dir"
+  local STATUS=$?
+  if [ $STATUS -gt 1 ]; then
+      echo "Unzip failed with a critical error code: $STATUS"
+      exit $STATUS
+  fi
 }
