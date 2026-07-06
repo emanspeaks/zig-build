@@ -12,13 +12,14 @@ export CMAKE_VERSION=4.3.3
 # export ZIG_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Release -DZIG_NO_LIB=ON"
 # export ZIG_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DZIG_NO_LIB=ON -DCMAKE_VERBOSE_MAKEFILE=ON"
 # export ZIG_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DZIG_NO_LIB=ON -DZIG_EXTRA_BUILD_ARGS=-j1"
-export ZIG_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DZIG_NO_LIB=ON -DCMAKE_VERBOSE_MAKEFILE=ON -DZIG_EXTRA_BUILD_ARGS=--verbose-cc\;--verbose-link"
+export ZIG_CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DZIG_NO_LIB=ON -DCMAKE_VERBOSE_MAKEFILE=ON -DZIG_EXTRA_BUILD_ARGS=--verbose-cc\;--verbose-link\;-fincremental"
 # export NINJA_ARGS="-v -d explain"
 export NINJA_ARGS="-v"
 
 export ZIG_BUILD_TYPE_DEBUG=
 export ZIG_BUILD_TYPE_RELWITHDEBINFO="-Doptimize=ReleaseFast"
-export ZIG_BUILD_TYPE_RELEASE="-Doptimize=ReleaseFast -Dstrip"export ZIG_BUILD_TYPE_MINSIZEREL="-Doptimize=ReleaseSmall"
+export ZIG_BUILD_TYPE_RELEASE="-Doptimize=ReleaseFast -Dstrip"
+export ZIG_BUILD_TYPE_MINSIZEREL="-Doptimize=ReleaseSmall"
 
 export ZIG_BUILD_TYPE="$ZIG_BUILD_TYPE_RELWITHDEBINFO"
 
@@ -50,6 +51,9 @@ export ZIG_STAGE4_EXE=$ZIG_STAGE4_BIN/zig
 export ZIG_EXE_WIN="$(cygpath -wa "$ZIG_EXE")"
 export ZIG_EXE="$ZIG_EXE_WIN"
 # end windows weirdo overrides
+
+export ZLS_SRC=$ZIGROOT/zls
+export ZLS_BUILD=$ZIG_BUILD/zls
 
 # :: set PATH to a very minimal set of values to limit bad dependency resolution
 # :: I think something in my path on work laptop is polluting dependencies,
