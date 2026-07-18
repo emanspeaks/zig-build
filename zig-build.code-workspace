@@ -16,6 +16,8 @@
       // "build/zig-global-cache/**": true,
       // "build/zig-local-cache/**": true,
       "randytmp/zig-build/**": true,
+      "**/zig-pkg/**": true,
+			"**/zig-cache*/**": true,
     },
     "files.watcherExclude": {
       "**/build/**": true,
@@ -25,6 +27,8 @@
       "build/zig-global-cache/**": true,
       "build/zig-local-cache/**": true,
       "build/CMakeFiles/**": true,
+      "**/zig-pkg/**": true,
+			"**/zig-cache*/**": true,
     },
     "lldb.launch.initCommands": [
       "command script import ${workspaceFolder}/zig-src/tools/lldb_pretty_printers.py",

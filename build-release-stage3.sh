@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #cSpell:enableCompoundWords
 . ./common.sh
+. ./env-setup.sh
 
 # precompute paths and file names
 DEVKIT_LONGNAME=zig+llvm+lld+clang-x86_64-windows-gnu-$DEVKIT_VERSION

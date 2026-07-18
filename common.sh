@@ -54,6 +54,8 @@ export ZIG_EXE="$ZIG_EXE_WIN"
 
 export ZLS_SRC=$ZIGROOT/zls
 export ZLS_BUILD=$ZIG_BUILD/zls
+export ZLS_BIN=$ZLS_BUILD/bin
+export ZLS_EXE=$ZLS_BIN/zls
 
 # :: set PATH to a very minimal set of values to limit bad dependency resolution
 # :: I think something in my path on work laptop is polluting dependencies,
@@ -73,12 +75,6 @@ export ZIG_LOCAL_CACHE_DIR=$ZIG_BUILD/zig-local-cache
 # e.g. with rerun-failed-step.sh.
 export ZIG_BUILD_LOG_DIR=$ZIG_BUILD/logs
 export ZIG_BUILD_LOG="$ZIG_BUILD_LOG_DIR/build-$(date +%Y%m%d-%H%M%S).log"
-
-mkdir -p "$DOWNLOADS"
-mkdir -p "$ZIGROOTBIN"
-mkdir -p "$ZIG_BUILD"
-mkdir -p "$ZIG_BUILD_LOG_DIR"
-[ -L "$ZIG_BUILD/lib" ] || ln -s "$ZIG_SRC/lib" "$ZIG_BUILD/lib"
 
 pause () {
   # cmd //c pause
