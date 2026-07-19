@@ -18,8 +18,9 @@ const zig2_cflags = [_][]const u8{
     "-D__STDC_LIMIT_MACROS",
 };
 
-pub fn genZig2C(b: *std.Build, zig1: *std.Build.Step.Compile, tgtinfo: TargetInfo, config_zig: std.Build.LazyPath) std.Build.LazyPath {
+pub fn genZig2C(b: *std.Build, zig1: *std.Build.Step.Compile, tgtinfo: TargetInfo, config_zig: std.Build.LazyPath, wait_on: *std.Build.Step) std.Build.LazyPath {
     const gen_zig2c = b.addRunArtifact(zig1);
+    gen_zig2c.step.dependOn(wait_on);
     gen_zig2c.setCwd(b.path(zig_src));
     gen_zig2c.addArg("lib");
     gen_zig2c.addArgs(&.{ "build-exe", "-ofmt=c", "-lc", "-OReleaseSmall", "--name", "zig2" });
@@ -29,8 +30,9 @@ pub fn genZig2C(b: *std.Build, zig1: *std.Build.Step.Compile, tgtinfo: TargetInf
     return zig2_c;
 }
 
-pub fn genCrtC(b: *std.Build, zig1: *std.Build.Step.Compile, tgtinfo: TargetInfo) std.Build.LazyPath {
+pub fn genCrtC(b: *std.Build, zig1: *std.Build.Step.Compile, tgtinfo: TargetInfo, wait_on: *std.Build.Step) std.Build.LazyPath {
     const gen_crt = b.addRunArtifact(zig1);
+    gen_crt.step.dependOn(wait_on);
     gen_crt.setCwd(b.path(zig_src));
     gen_crt.addArg("lib");
     gen_crt.addArgs(&.{ "build-obj", "-ofmt=c", "-OReleaseSmall", "--name", "compiler_rt" });

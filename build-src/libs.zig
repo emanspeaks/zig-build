@@ -294,7 +294,7 @@ fn addLibs(b: *std.Build, t: std.Target, mod: *std.Build.Module, devkit: []const
     for (names) |name| mod.addObjectFile(.{ .cwd_relative = libFile(b, t, devkit, name) });
 }
 
-// experimental llvm target toggles
+/// experimental llvm target toggles
 pub const ExperimentalTargets = struct {
     m68k: bool,
     csky: bool,

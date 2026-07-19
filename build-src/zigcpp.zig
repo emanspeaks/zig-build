@@ -38,8 +38,8 @@ pub fn buildZigCpp(b: *std.Build, tgtinfo: TargetInfo, devkit: DevkitInfo) *std.
     cppmod.addIncludePath(devkit.devkit_inc);
     for (cpp_sources) |f| cppmod.addCSourceFile(.{ .file = b.path(f), .flags = &cpp_flags });
     const zigcpp = b.addLibrary(.{ .name = "zigcpp", .linkage = .static, .root_module = cppmod });
-    // zig2 links this directly (see z2mod.linkLibrary below); stage3 builds
-    // its own separate copy via -Dstatic-llvm, so this one never needs to
-    // touch disk.
+    // zig2 links this directly.
+    // stage3 builds its own separate copy via -Dstatic-llvm,
+    // so this one never needs to save anything to disk.
     return zigcpp;
 }

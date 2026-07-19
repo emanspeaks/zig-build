@@ -38,10 +38,10 @@ cd "$ZIG_SRC"
 # mv -f "$ZIGROOTBIN/zig" "$ZIGROOTBIN/zig3" || exit 1
 echo Build stage 3 complete
 
-echo Build stage 3 complete, testing...
+echo Testing stage 3...
 if [ "$FULLTESTFLAG" -eq 1 ]; then
-  "$ZIG_STAGE3_EXE" build test 2>&1 | tee -a "$ZIG_BUILD_LOG" || exit 1
+  "$ZIG_STAGE3_EXE" build test || exit 1
 else
-  "$ZIG_STAGE3_EXE" build test-std -Dskip-release -Dskip-non-native 2>&1 | tee -a "$ZIG_BUILD_LOG" || exit 1
+  "$ZIG_STAGE3_EXE" build test-std -Dskip-release -Dskip-non-native || exit 1
 fi
-echo Build stage 3 complete.
+echo Testing stage 3 complete.

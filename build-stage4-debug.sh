@@ -5,11 +5,24 @@
 echo Building stage 4...
 
 cd "$ZIG_SRC"
-"$ZIG_STAGE3_EXE" build -p "$ZIG_STAGE4_PREFIX" -Denable-llvm -Dno-lib 2>&1 | tee -a "$ZIG_BUILD_LOG" || exit 1
+"$ZIG_STAGE3_EXE" build \
+  -p "$ZIG_STAGE4_PREFIX" \
+  -Dstatic-llvm \
+  --search-prefix "${DEVKIT_WIN:-$DEVKIT}" \
+  -Dno-lib \
+  || exit 1
+  # -Denable-llvm \
+
+echo Build stage 4 complete, testing...
 if [ "$FULLTESTFLAG" -eq 1 ]; then
-  "$ZIG_STAGE4_EXE" build test -Denable-llvm 2>&1 | tee -a "$ZIG_BUILD_LOG" || exit 1
+  "$ZIG_STAGE4_EXE" build test \
+    -Dstatic-llvm \
+    --search-prefix "${DEVKIT_WIN:-$DEVKIT}" \
+    || exit 1
+    # -Denable-llvm \
 else
-  "$ZIG_STAGE4_EXE" build test-std -Dskip-release -Dskip-non-native 2>&1 | tee -a "$ZIG_BUILD_LOG" || exit 1
+  # "test-std" isn't a real step in this zig-src; the matching one is test-modules
+  "$ZIG_STAGE4_EXE" build test-modules -Dskip-release -Dskip-non-native || exit 1
 fi
 
 echo Zig debug stage 4 successfully built!
