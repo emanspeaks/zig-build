@@ -1,0 +1,90 @@
+If:
+  PathMatch: .*\.in$
+
+CompileFlags:
+  Remove:
+    - -Wall
+    - -Wextra
+    - -Wpedantic
+
+Diagnostics:
+  Suppress:
+    - "*"
+
+---
+
+# Only bootstrap.c wants the cross-compiled Linux target; it isn't part of
+# the normal Windows build path on this machine.
+If:
+  PathMatch: zig-src/bootstrap\.c$
+
+CompileFlags:
+  Add:
+    - -Wall
+    - -Wextra
+    - -Wpedantic
+    - -std=c99
+    - "-target"
+    - "x86_64-unknown-linux-gnu" # Changes target to 64-bit Linux
+    - -nostdinc                     # Don't use host system or builtin headers
+    - "-resource-dir=../devkit-0.17.0-dev.203+073889523/lib/clang/22"
+    - "-isystem../devkit-0.17.0-dev.203+073889523/lib/zig/include"
+    - "-isystem../devkit-0.17.0-dev.203+073889523/lib/zig/libc/include/x86-linux-gnu"
+    - "-isystem../devkit-0.17.0-dev.203+073889523/lib/zig/libc/include/generic-glibc"
+    - "-isystem../devkit-0.17.0-dev.203+073889523/lib/zig/libc/include/x86-linux-any"
+    - "-isystem../devkit-0.17.0-dev.203+073889523/lib/zig/libc/include/any-linux-any"
+    #- "-D__linux__"              # Explicitly defines the Linux macro
+    #- "-D__gnu_linux__"          # Explicitly defines the GNU Linux macro
+    #- "-U_WIN32"                 # Un-defines Windows macros
+    #- "-U_WIN64"
+    #- "-U__MINGW32__"
+
+Diagnostics:
+  UnusedIncludes: None
+  Suppress:
+    - unused-parameter
+
+---
+
+If:
+  PathMatch: zig-src/lib/include/llvm_libc_wrappers/.*\.h$
+
+CompileFlags:
+  Add:
+    - -D__CUDA__  # Define CUDA macro for GPU-only wrapper headers
+    - "-I../../../../devkit-0.17.0-dev.203+073889523/include"  # Add devkit headers for #include_next
+
+Diagnostics:
+  UnusedIncludes: None
+  Suppress:
+    # - pp_hash_error  # Suppress "This file is for GPU offloading only" error
+    - pp_include_next_in_primary  # Suppress "#include_next is a language extension"
+    - drv_cyclic_preamble_include  # Suppress "Main file cannot be included recursively"
+
+---
+
+If:
+  PathMatch: zig-src/lib/zig\.h$
+
+CompileFlags:
+  Add:
+    - -Wall
+    - -Wextra
+    - -Wpedantic
+    - -std=c++23
+    - "-target"
+    - "x86_64-unknown-linux-gnu" # Changes target to 64-bit Linux
+    - -Ilibc/include/x86-linux-gnu
+    - -Ilibc/include/generic-glibc
+    - -Ilibc/include/x86-linux-any
+    - -Ilibc/include/any-linux-any
+    #- "-D__linux__"              # Explicitly defines the Linux macro
+    #- "-D__gnu_linux__"          # Explicitly defines the GNU Linux macro
+    #- "-U_WIN32"                 # Un-defines Windows macros
+    #- "-U_WIN64"
+    #- "-U__MINGW32__"
+
+Diagnostics:
+  UnusedIncludes: None
+  Suppress:
+    - unused-parameter

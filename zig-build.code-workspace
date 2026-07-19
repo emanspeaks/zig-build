@@ -6,18 +6,25 @@
   ],
   "settings": {
     // "zig.path": "C:/scratch/git/zig-build/devkit-0.17.0-dev.203+073889523/bin/zig.exe",
-    "zig.path": "${workspaceFolder}\\build\\stage3\\bin\\zig.exe",
-    "zig.zls.path": "${workspaceFolder}\\build\\zls\\bin\\zls.exe",
+    // "zig.path": "${workspaceFolder}\\build\\stage3\\bin\\zig.exe",
+
+    // "zig.path": "${workspaceFolder}\\bin\\stage3\\bin\\zig.exe",
+    // "zig.zls.path": "${workspaceFolder}\\bin\\zls\\bin\\zls.exe",
     "zig.zls.enabled": "on",
     "cmake.ignoreCMakeListsMissing": true,
     "files.exclude": {
       "**/.git": true,
       "**/.zig-cache/**": true,
-      // "build/zig-global-cache/**": true,
-      // "build/zig-local-cache/**": true,
+      "build/zig-global-cache/**": true,
+      "build/zig-local-cache/**": true,
       "randytmp/zig-build/**": true,
       "**/zig-pkg/**": true,
 			"**/zig-cache*/**": true,
+			"zig-src/zig-out/**": true,
+			"lib/**": true,
+			"bin/cmake-*/doc/**": true,
+			"bin/cmake-*/man/**": true,
+			"bin/cmake-*/share/**": true,
     },
     "files.watcherExclude": {
       "**/build/**": true,
@@ -29,6 +36,11 @@
       "build/CMakeFiles/**": true,
       "**/zig-pkg/**": true,
 			"**/zig-cache*/**": true,
+			"zig-src/zig-out/**": true,
+			"lib/**": true,
+		  "bin/cmake-*/doc/**": true,
+			"bin/cmake-*/man/**": true,
+			"bin/cmake-*/share/**": true,
     },
     "lldb.launch.initCommands": [
       "command script import ${workspaceFolder}/zig-src/tools/lldb_pretty_printers.py",
@@ -40,7 +52,8 @@
     "files.associations": {
       "VERSION": "plaintext",
       ".local-gitignore": "gitignore",
-      ".github/workflows/exempt.txt": "gitignore"
+      ".github/workflows/exempt.txt": "gitignore",
+      ".clangd": "yaml",
     },
   },
   "tasks": {

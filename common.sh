@@ -22,7 +22,7 @@ export ZIG_BUILD_TYPE_RELWITHDEBINFO="-Doptimize=ReleaseFast"
 export ZIG_BUILD_TYPE_RELEASE="-Doptimize=ReleaseFast -Dstrip"
 export ZIG_BUILD_TYPE_MINSIZEREL="-Doptimize=ReleaseSmall"
 
-export ZIG_BUILD_TYPE="$ZIG_BUILD_TYPE_RELWITHDEBINFO"
+# export ZIG_BUILD_TYPE="$ZIG_BUILD_TYPE_RELWITHDEBINFO"
 
 # precompute paths and file names
 export DEVKIT_NAME=devkit-$DEVKIT_VERSION
@@ -38,24 +38,33 @@ export CMAKE_BIN=$CMAKE_DIR/bin
 
 export ZIG_SRC=$ZIGROOT/zig-src
 export ZIG_BUILD=$ZIGROOT/build
-export ZIG_STAGE3_BIN=$ZIG_BUILD/stage3/bin
-export ZIG_STAGE4=$ZIG_BUILD/stage4
-export ZIG_STAGE4_BIN=$ZIG_STAGE4/bin
+# export ZIG_STAGE3_BIN=$ZIG_BUILD/stage3/bin
+export ZIG_STAGE3_PREFIX=$ZIGROOTBIN/stage3
+export ZIG_STAGE3_BIN=$ZIG_STAGE3_PREFIX/bin
+export ZIG_STAGE4_PREFIX=$ZIGROOTBIN/stage4
+export ZIG_STAGE4_BIN=$ZIG_STAGE4_PREFIX/bin
 
 export NINJA_EXE=$ZIGROOTBIN/ninja
 export CMAKE_EXE=$CMAKE_BIN/cmake
-export ZIG_EXE=$DEVKIT/bin/zig
+export DEVKIT_ZIG_EXE=$DEVKIT/bin/zig
+# export ZIG_STAGE3_EXE=$ZIG_STAGE3_BIN/zig3
 export ZIG_STAGE3_EXE=$ZIG_STAGE3_BIN/zig
 export ZIG_STAGE4_EXE=$ZIG_STAGE4_BIN/zig
 
 # for windows specifically...
-export ZIG_EXE_WIN="$(cygpath -wa "$ZIG_EXE")"
-export ZIG_EXE="$ZIG_EXE_WIN"
+if command -v cygpath >/dev/null 2>&1; then
+  export DEVKIT_ZIG_EXE_WIN="$(cygpath -wa "$DEVKIT_ZIG_EXE")"
+  export DEVKIT_ZIG_EXE="$DEVKIT_ZIG_EXE_WIN"
+  # native zig.exe cannot open msys /c/... paths; -m keeps forward slashes
+  # so config.h stays valid as a C string
+  export DEVKIT_WIN="$(cygpath -ma "$DEVKIT")"
+fi
 # end windows weirdo overrides
 
 export ZLS_SRC=$ZIGROOT/zls
 export ZLS_BUILD=$ZIG_BUILD/zls
-export ZLS_BIN=$ZLS_BUILD/bin
+export ZLS_PREFIX=$ZIGROOTBIN/zls
+export ZLS_BIN=$ZLS_PREFIX/bin
 export ZLS_EXE=$ZLS_BIN/zls
 
 # :: set PATH to a very minimal set of values to limit bad dependency resolution
@@ -63,7 +72,7 @@ export ZLS_EXE=$ZLS_BIN/zls
 # :: probably zlib since that has caused problems for me in the past on this PC
 # set WINSYS32=%SystemRoot%\System32
 # set PATH=%ZIGROOTBIN_WIN%;%ZIGROOTBIN_WIN%\%CMAKE_NAME%\bin;%WINSYS32%;%SystemRoot%;%WINSYS32%\Wbem;%WINSYS32%\WindowsPowerShell\v1.0\;%WINSYS32%\OpenSSH\;%ProgramFiles%\dotnet\;%LOCALAPPDATA%\Microsoft\WindowsApps;%LOCALAPPDATA%\Programs\Git\bin;%ProgramFiles%\Git\cmd
-export PATH="$ZIG_STAGE3_BIN:$ZIGROOTBIN:$CMAKE_BIN:$PATH"
+# export PATH="$ZIG_STAGE3_BIN:$ZIGROOTBIN:$CMAKE_BIN:$PATH"
 
 # Override the cache directories because they won't actually help other Zig runs outside of this repo.
 # Runs of this script, however, will be testing alternate versions of zig, and ultimately would just
