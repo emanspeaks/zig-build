@@ -12,6 +12,7 @@ devkits
 DIRENV
 Dlltool
 Dyld
+Eglot
 envrc
 femit
 GiB
@@ -59,6 +60,7 @@ lole
 lversion
 Mbuild
 mklink
+mlugg
 Mroot
 msvc
 MSVC
@@ -78,10 +80,12 @@ toolchain
 Toolchain
 toolset
 TranslateC
+tvos
 vendored
 vendoring
 WASI
 wasmtime
+watchos
 WINSYS32
 xtensa
 zig
