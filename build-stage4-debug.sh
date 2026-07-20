@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #cSpell:enableCompoundWords
-. ./common.sh
+ZIGROOT=${ZIGROOT:-$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)}
+. "$ZIGROOT/common.sh"
 
 echo Building stage 4...
 
@@ -10,6 +11,7 @@ cd "$ZIG_SRC"
   -Dstatic-llvm \
   --search-prefix "${DEVKIT_WIN:-$DEVKIT}" \
   -Dno-lib \
+  $@ \
   || exit 1
   # -Denable-llvm \
 
