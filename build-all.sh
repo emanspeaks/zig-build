@@ -2,12 +2,6 @@
 #cSpell:enableCompoundWords
 . ./common.sh
 
-# stage3: original way
-# . ./env-setup.sh
-# ./build-devkit.sh || exit 1
-# ./legacy/build-cmake.sh || exit 1
-# ./legacy/build-ninja.sh || exit 1
-
 # stage3: zig-only way
 ./build-stage3.sh || exit 1
 
