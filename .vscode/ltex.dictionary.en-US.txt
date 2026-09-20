@@ -9,6 +9,7 @@ CMake
 cmakefail
 csky
 devkits
+diffz
 DIRENV
 Dlltool
 Dyld
@@ -20,6 +21,7 @@ glibc
 gofmt
 GSYM
 ifndef
+kcov
 libc
 libclang
 libcpp
@@ -74,6 +76,8 @@ qemu
 qemu-static
 readme
 recompiles
+riscv
+spirv
 std
 tgtinfo
 toolchain

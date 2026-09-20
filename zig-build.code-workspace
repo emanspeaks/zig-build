@@ -67,6 +67,12 @@
 
     // for C deps we will compile with Zig that have CMakeLists in their repos
     "cmake.ignoreCMakeListsMissing": true,
+    "cmake.autoDetectSourceDirectory": false,
+    // never run CMake automatically; only when invoked manually from the command palette
+    "cmake.configureOnOpen": false,
+    "cmake.configureOnEdit": false,
+    "cmake.automaticReconfigure": false,
+    "cmake.enableAutomaticKitScan": false,
 
     // CodeLLDB settings - never got this to work properly.
     // // "lldb.library": "",
